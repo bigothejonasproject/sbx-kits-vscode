@@ -5,7 +5,7 @@ displayName: VSCode with Claude Code
 description: "Runs VS Code inside a Docker Sandbox with the Claude Code extension pre-installed and exposed over a VS Code tunnel, so you can attach from your local desktop VS Code (Remote - Tunnels) or vscode.dev."
 
 sandbox:
-  image: "ajeetraina777/sbx-vscode"
+  image: "bigothejonasproject/sbx-vscode"
   entrypoint: ["code", "tunnel", "--accept-server-license-terms"]
 
 permissions:
