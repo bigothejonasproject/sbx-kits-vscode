@@ -20,6 +20,13 @@ jobs:
           curl -fsSL https://get.docker.com | sudo REPO_ONLY=1 sh
           sudo apt-get install -y docker-sbx
 
+      # sbx refuses every command, even validate, until signed in.
+      - name: Sign in to sbx
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+        run: echo "$DOCKERHUB_TOKEN" | sbx login --username "$DOCKERHUB_USERNAME" --password-stdin
+
       # Schema-aware check: catches v1 fields in a v2 spec, not just YAML syntax.
       - name: Validate kit
         run: sbx kit validate .
@@ -63,12 +70,12 @@ jobs:
           curl -fsSL https://get.docker.com | sudo REPO_ONLY=1 sh
           sudo apt-get install -y docker-sbx
 
-      # sbx kit push falls back to the Docker credential store for auth.
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      # The sbx login session is also what kit push authenticates with.
+      - name: Sign in to sbx
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+        run: echo "$DOCKERHUB_TOKEN" | sbx login --username "$DOCKERHUB_USERNAME" --password-stdin
 
       - name: Push kit
         run: sbx kit push . "$KIT_REF"
