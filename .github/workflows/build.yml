@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  KIT_REF: docker.io/bigothejonasproject/sbx-vscode-kit:latest
+  KIT_REF: docker.io/oiradoc/sbx-vscode-kit:latest
 
 jobs:
   validate:
@@ -53,7 +53,7 @@ jobs:
           context: image
           platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
-          tags: bigothejonasproject/sbx-vscode:latest
+          tags: oiradoc/sbx-vscode:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
